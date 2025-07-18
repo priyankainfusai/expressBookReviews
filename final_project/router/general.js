@@ -19,14 +19,10 @@ public_users.get('/',function (req, res) {
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
   //Write your code here
-  let isbn = req.params.isbn;
-  const booksArray = Object.entries(books).map(([id, book]) => ({
-    id: Number(id),
-    ...book,
-  }));
-  let filteredBooks = booksArray.filter(f=>f.ISBN === isbn);
-  if(filteredBooks.length > 0){
+  let isbn = parseInt(req.params.isbn);
 
+  let filteredBooks = books[isbn]
+  if(filteredBooks){
       return res.status(200).json({message: "Books based on ISBN",data : filteredBooks});
   }else{
     return res.status(404).json({message : "No Books found"});
@@ -69,7 +65,10 @@ public_users.get('/title/:title',function (req, res) {
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  let isbn = req.params.isbn;
+  let review = books[isbn]?.reviews;
+  console.log(review,"review");
+  return res.status(200).json({message: "Review for ISBN", data : review});
 });
 
 module.exports.general = public_users;
